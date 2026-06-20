@@ -1,7 +1,7 @@
 #!/bin/bash
 # forked from totallynotinteresting/crossover
 
-CROSSOVER_MACOS_PATH="/Applications/CrossOver.app/Contents/MacOS"
+CROSSOVER_MACOS_PATH="~/Applications/CrossOver.app/Contents/MacOS"
 REPO_URL="https://github.com/everythinginitsrightplace/crossover.git"
 RAW_URL="https://raw.githubusercontent.com/everythinginitsrightplace/crossover/main"
 RELEASE_URL="https://github.com/everythinginitsrightplace/crossover/releases/latest/download/hook.dylib"
