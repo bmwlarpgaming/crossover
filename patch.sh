@@ -1,7 +1,11 @@
 #!/bin/bash
 # forked from totallynotinteresting/crossover
 
-CROSSOVER_MACOS_PATH="$HOME/Applications/CrossOver.app/Contents/MacOS"
+CROSSOVER_APP_PATH=""
+if command -v mdfind &>/dev/null; then
+    CROSSOVER_APP_PATH="$(mdfind "kMDItemFSName == 'CrossOver.app'" -onlyin /Applications -onlyin "$HOME/Applications" 2>/dev/null | head -1)"
+fi
+CROSSOVER_MACOS_PATH="${CROSSOVER_APP_PATH:-$HOME/Applications/CrossOver.app}/Contents/MacOS"
 REPO_URL="https://github.com/everythinginitsrightplace/crossover.git"
 RAW_URL="https://raw.githubusercontent.com/everythinginitsrightplace/crossover/main"
 RELEASE_URL="https://github.com/everythinginitsrightplace/crossover/releases/latest/download/hook.dylib"
