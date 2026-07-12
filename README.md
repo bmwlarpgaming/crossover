@@ -1,5 +1,5 @@
-# Fork / Rehost of totallynotinteresting/crossover (deleted)
-## The README.md is mostly identical, same as the script, only changes being that it uses this repository.
+# Fork of totallynotinteresting/crossover (deleted)
+## The README.md is mostly identical, same as the script, only changes being that it uses this repository and there are some new QOL changes.
 ## Have fun!
 
 how to run:
