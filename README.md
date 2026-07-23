@@ -8,8 +8,20 @@ umm grant Terminal Full Disk Access. System Settings > Privacy & Security > Full
 
 uh open the terminal (cmd + space, type in terminal, and press the one that literally says "Terminal")
 
-then just run:
-`curl -fsSL https://raw.githubusercontent.com/everythinginitsrightplace/crossover/main/patch.sh | bash`
+download or copy the complete repository to your Mac. The installer is now
+local-only: `patch.sh`, `pco.sh`, and `hook.m` must stay together in the same
+directory. It does not clone a repository or download fallback files.
+
+then run:
+```sh
+cd /path/to/crossover
+bash ./patch.sh
+```
+
+if CrossOver is outside `/Applications` or `~/Applications`, run:
+```sh
+CROSSOVER_APP_PATH="/path/to/CrossOver.app" bash ./patch.sh
+```
 
 then open /Applications/CrossOver.app, should all be good, i hope :p
 
