@@ -14,34 +14,47 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build hook.dylib
+      - name: Download CrossOver
         run: |
-          clang -dynamiclib -framework Foundation -framework AppKit -o hook.dylib hook.m
+          bash ./download.sh
 
-      - name: Ad-hoc codesign
+      - name: Patch CrossOver
         run: |
-          codesign -f -s - hook.dylib
+          crossover_app="$(find "$GITHUB_WORKSPACE" -type d -name 'CrossOver.app' -print -quit)"
+          if [ -z "$crossover_app" ]; then
+            echo "CrossOver.app was not found after running download.sh."
+            exit 1
+          fi
+
+          CROSSOVER_APP_PATH="$crossover_app" bash ./patch.sh
+          printf 'CROSSOVER_APP_PATH=%s\n' "$crossover_app" >> "$GITHUB_ENV"
+
+      - name: Create patched app archive
+        run: |
+          ditto -c -k --sequesterRsrc --keepParent \
+            "$CROSSOVER_APP_PATH" \
+            crossover-patched.zip
 
       - name: Create Release for Commit
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.sha }}
           name: Release ${{ github.sha }}
-          files: hook.dylib
+          files: crossover-patched.zip
           body: |
-            Automated build for commit ${{ github.sha }}
+            Automated patched CrossOver app for commit ${{ github.sha }}.
 
             Build triggered by: ${{ github.actor }}
 
       - name: Update Latest Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
           name: Latest Build
-          files: hook.dylib
+          files: crossover-patched.zip
           make_latest: true
           body: |
-            This is the latest automated build of hook.dylib.
+            This is the latest automated patched CrossOver app.
 
             Latest commit: ${{ github.sha }}
             [View changes](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
